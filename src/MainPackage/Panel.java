@@ -62,21 +62,22 @@ public class Panel extends JPanel implements ActionListener {
             g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH+UNIT_SIZE*9-metrics2.stringWidth("Game made by Auqherus"))/2,SCREEN_HEIGHT-10); // for author
             /*g.drawString("Game made by Auqherus",SCREEN_WIDTH-120,SCREEN_HEIGHT-10);*/
         }
-       else if (running && !isGameMenu) {
+       else if (running) {
             /*for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
                 g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT); //ustawienie siatki na X
                 g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE); //ustawienie siatki na Y
             }*/
-                g.setColor(Color.RED);
-                g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE); // wygląd jabłka
+                g.setColor(Color.ORANGE);
+                /*g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE); // wygląd jabłka*/
+                g.fillArc(appleX,appleY,UNIT_SIZE,UNIT_SIZE,15,225); // rogalik zamiast jabłka ^^
                 for (int i = 0; i < bodyParts; i++) { // cialo weza
                 if (i == 0) {
                     g.setColor(Color.GREEN);
-                    g.fillRect(tabX[i], tabY[i], UNIT_SIZE, UNIT_SIZE);
+                    g.fillOval(tabX[i], tabY[i], UNIT_SIZE, UNIT_SIZE);
                 } else {
                     g.setColor(new Color(36, 138, 26));
                    /* g.setColor(new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255),random.nextInt(255)));*/
-                    g.fillRect(tabX[i], tabY[i], UNIT_SIZE, UNIT_SIZE);
+                    g.fillOval(tabX[i], tabY[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
             g.setColor(new Color(182, 36, 217, 255));
