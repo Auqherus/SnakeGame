@@ -22,6 +22,7 @@ public class Panel extends JPanel implements ActionListener {
     char direction = 'R';
     boolean running = false;
     boolean isGameMenu = true;
+    boolean isGameOver = false;
     Timer timer;
     Random random;
 
@@ -91,7 +92,7 @@ public class Panel extends JPanel implements ActionListener {
         }
         else{
             gameOver(g);
-
+            isGameOver = true;
 
         }
     }
@@ -161,13 +162,18 @@ public class Panel extends JPanel implements ActionListener {
 
         g.setColor(Color.RED); // metoda dla koniec gry
         g.setFont(new Font("Comic Sans MS",Font.BOLD,82));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over!",(SCREEN_WIDTH - metrics.stringWidth("Game Over!"))/2,SCREEN_HEIGHT/2 );
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        g.drawString("Game Over!",(SCREEN_WIDTH - metrics2.stringWidth("Game Over!"))/2,SCREEN_HEIGHT/2 );
+
+        g.setColor(Color.GREEN); // wciśnij spację, by zagrać jeszcze raz
+        g.setFont(new Font("Comic Sans MS",Font.BOLD,22));
+        FontMetrics metrics3 = getFontMetrics(g.getFont());
+        g.drawString("Press Space to Try again!",(SCREEN_WIDTH - metrics3.stringWidth("Press Space to Try again!"))/2,SCREEN_HEIGHT-250 );
 
         g.setColor(new Color(48, 217, 36, 255)); //podpis autora
         g.setFont(new Font("Comic Sans MS",Font.BOLD,13));
-        FontMetrics metrics2 = getFontMetrics(g.getFont());
-        g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH+UNIT_SIZE*9-metrics2.stringWidth("Game made by Auqherus"))/2,SCREEN_HEIGHT-10); // for author
+        FontMetrics metrics4 = getFontMetrics(g.getFont());
+        g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH+UNIT_SIZE*9-metrics4.stringWidth("Game made by Auqherus"))/2,SCREEN_HEIGHT-10); // for author
     }
 
     public void startNewGame(Graphics g){
@@ -218,12 +224,16 @@ public class Panel extends JPanel implements ActionListener {
                         isGameMenu = false;
                         startGame();
                     }
-                    else if(running){
-                        break;
+                    break;
+
+                case KeyEvent.VK_SPACE:
+                    if(isGameOver){
+                       eatenApples = 0;
+                       bodyParts = 3;
+                       isGameOver = false;
+                        startGame();
                     }
-
-
-
+                    break;
             }
 
         }
