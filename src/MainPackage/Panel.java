@@ -2,20 +2,22 @@ package MainPackage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.Random;
 
 
 public class Panel extends JPanel implements ActionListener {
     // Ustawienia panelu dla gry
-    static final int SCREEN_WIDTH = 600;
-    static final int SCREEN_HEIGHT = 600;
-    static final int UNIT_SIZE = 15;
+    static final int SCREEN_WIDTH = 750;
+    static final int SCREEN_HEIGHT = 750;
+    static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 62;
+    static int DELAY = 72;
     // ustawienia planszy
     final int tabX[] = new int[GAME_UNITS]; // dla węża(głowa, body etc)
     final int tabY[] = new int[GAME_UNITS];
-    int bodyParts = 3;
+    int bodyParts = 2;
     int eatenApples;
     int appleX;
     int appleY;
@@ -23,6 +25,33 @@ public class Panel extends JPanel implements ActionListener {
     boolean running = false;
     boolean isGameMenu = true;
     boolean isGameOver = false;
+    boolean isBoostMode = false;
+    Image appleFood = new Image() {
+        @Override
+        public int getWidth(ImageObserver observer) {
+            return UNIT_SIZE;
+        }
+
+        @Override
+        public int getHeight(ImageObserver observer) {
+            return UNIT_SIZE;
+        }
+
+        @Override
+        public ImageProducer getSource() {
+            return null;
+        }
+
+        @Override
+        public Graphics getGraphics() {
+            return null;
+        }
+
+        @Override
+        public Object getProperty(String name, ImageObserver observer) {
+            return null;
+        }
+    };
     Timer timer;
     Random random;
 
@@ -43,6 +72,7 @@ public class Panel extends JPanel implements ActionListener {
         timer = new Timer(DELAY,this);
         timer.start();
     }
+
     public void paintComponent(Graphics g){
      super.paintComponent(g);
      draw(g);
@@ -53,13 +83,13 @@ public class Panel extends JPanel implements ActionListener {
 
             g.setColor(Color.GREEN); // metoda dla koniec gry
             g.setFont(new Font("Comic Sans MS",Font.BOLD,36));
-            FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Press Enter to start Game!",(SCREEN_WIDTH)/UNIT_SIZE+25,SCREEN_HEIGHT-450);
+            /*FontMetrics metrics = getFontMetrics(g.getFont());*/
+            g.drawString("Press Enter to start Game!",(SCREEN_WIDTH)/UNIT_SIZE+125,SCREEN_HEIGHT-550);
 
             g.setColor(new Color(48, 217, 36, 255)); //podpis autora
             g.setFont(new Font("Comic Sans MS",Font.BOLD,13));
-            FontMetrics metrics2 = getFontMetrics(g.getFont());
-            g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH+UNIT_SIZE*9-metrics2.stringWidth("Game made by Auqherus"))/2,SCREEN_HEIGHT-10); // for author
+            /*FontMetrics metrics2 = getFontMetrics(g.getFont());*/
+            g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH-305),SCREEN_HEIGHT-10); // for author
             /*g.drawString("Game made by Auqherus",SCREEN_WIDTH-120,SCREEN_HEIGHT-10);*/
         }
        else if (running) {
@@ -70,6 +100,7 @@ public class Panel extends JPanel implements ActionListener {
                 g.setColor(Color.ORANGE);
                 /*g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE); // wygląd jabłka*/
                 g.fillArc(appleX,appleY,UNIT_SIZE,UNIT_SIZE,15,225); // rogalik zamiast jabłka ^^
+
                 for (int i = 0; i < bodyParts; i++) { // cialo weza
                 if (i == 0) {
                     g.setColor(Color.GREEN);
@@ -87,8 +118,8 @@ public class Panel extends JPanel implements ActionListener {
 
             g.setColor(new Color(48, 217, 36, 255)); //podpis autora
             g.setFont(new Font("Comic Sans MS",Font.BOLD,13));
-            FontMetrics metrics2 = getFontMetrics(g.getFont());
-            g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH+UNIT_SIZE*9-metrics2.stringWidth("Game made by Auqherus"))/2,SCREEN_HEIGHT-10); // for author
+            /*FontMetrics metrics2 = getFontMetrics(g.getFont());*/
+            g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH-305),SCREEN_HEIGHT-10); // for author
             /*g.drawString("Game made by Auqherus",SCREEN_WIDTH-120,SCREEN_HEIGHT-10);*/
         }
         else{
@@ -103,8 +134,8 @@ public class Panel extends JPanel implements ActionListener {
     }
 
     public void newSnakePosition(){
-        tabX[0] = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-        tabY[0] = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+        tabX[0] = UNIT_SIZE*15;
+        tabY[0] = UNIT_SIZE*15;
     }
     public void moves(){
         for (int i = bodyParts; i>0; i--) {  // animowanie ciała węża - podążaj za ciałem
@@ -169,12 +200,12 @@ public class Panel extends JPanel implements ActionListener {
         g.setColor(Color.GREEN); // wciśnij spację, by zagrać jeszcze raz
         g.setFont(new Font("Comic Sans MS",Font.BOLD,22));
         FontMetrics metrics3 = getFontMetrics(g.getFont());
-        g.drawString("Press Space to Try again!",(SCREEN_WIDTH - metrics3.stringWidth("Press Space to Try again!"))/2,SCREEN_HEIGHT-250 );
+        g.drawString("Press Esc to Try again!",(SCREEN_WIDTH - metrics3.stringWidth("Press Esc to Try again!"))/2,SCREEN_HEIGHT-250 );
 
         g.setColor(new Color(48, 217, 36, 255)); //podpis autora
         g.setFont(new Font("Comic Sans MS",Font.BOLD,13));
-        FontMetrics metrics4 = getFontMetrics(g.getFont());
-        g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH+UNIT_SIZE*9-metrics4.stringWidth("Game made by Auqherus"))/2,SCREEN_HEIGHT-10); // for author
+        /*FontMetrics metrics4 = getFontMetrics(g.getFont());*/
+        g.drawString("Game made by Auqherus na zaliczenie projektu",(SCREEN_WIDTH-305),SCREEN_HEIGHT-10); // for author
     }
 
     public void startNewGame(Graphics g){
@@ -227,14 +258,15 @@ public class Panel extends JPanel implements ActionListener {
                     }
                     break;
 
-                case KeyEvent.VK_SPACE:
+                case KeyEvent.VK_ESCAPE:
                     if(isGameOver){
                        eatenApples = 0;
-                       bodyParts = 3;
+                       bodyParts = 2;
                        isGameOver = false;
-                        startGame();
+                       startGame();
                     }
                     break;
+
             }
 
         }
