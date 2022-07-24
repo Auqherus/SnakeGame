@@ -91,8 +91,6 @@ public class Panel extends JPanel implements ActionListener {
         }
     }
 
-
-
     public void draw(Graphics g) {
 
         if (pause && !isGameMenu) {
