@@ -3,7 +3,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.*;
 import java.util.Random;
 
 public class Panel extends JPanel implements ActionListener {
@@ -27,6 +27,7 @@ public class Panel extends JPanel implements ActionListener {
     File appleFile = new File("apple.png");
     /*File bodyFile = new File("body2.png");*/
     boolean pause = false;
+    public String highScore = "";
 
     Timer timer;
     Random random;
@@ -54,7 +55,7 @@ public class Panel extends JPanel implements ActionListener {
         draw(g);
     }
 
-    public void gamePause(Graphics g) {
+    public void gamePause(Graphics g) {  // PAUSA
         timer.stop();
         g.setColor(Color.GREEN);
         g.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
@@ -66,10 +67,10 @@ public class Panel extends JPanel implements ActionListener {
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("Score : " + eatenApples, (SCREEN_WIDTH - metrics.stringWidth("Score : " + eatenApples)) / 2, g.getFont().getSize()); // wynik
 
+
         g.setColor(new Color(48, 217, 36, 255)); //podpis autora
         g.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
         g.drawString("Game made by Auqherus na zaliczenie projektu", (SCREEN_WIDTH - 305), SCREEN_HEIGHT - 10); // for author
-
 
         try {
             Image appleFoodImg = ImageIO.read(appleFile);
@@ -87,6 +88,71 @@ public class Panel extends JPanel implements ActionListener {
                 g.setColor(new Color(36, 138, 26));
                 g.fillRect(tabX[i], tabY[i], UNIT_SIZE, UNIT_SIZE); // cialo wyglad
 
+            }
+        }
+    }
+
+    public String GetHighScoreValue(){  // Najwyzszy wynik :D
+        FileReader readFile;
+        BufferedReader reader = null;
+        try
+        {
+          readFile = new FileReader("highScore.dat");
+          reader = new BufferedReader(readFile);
+            try {
+                return reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+
+        }
+        finally{
+            try {
+                if(reader != null )
+                    reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "Nobody:0";
+    }
+
+    public void CheckScore (){
+        System.out.println(highScore);
+        if (eatenApples > Integer.parseInt((highScore.split(":")[1]))){
+            String name = JOptionPane.showInputDialog("You set a new RECORD! What is your name?");
+            highScore = name + ":" + eatenApples;
+
+            File scoreFile = new File("highscore.dat");
+            if(!scoreFile.exists()){
+                try {
+                    scoreFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            FileWriter writeFile =  null;
+            BufferedWriter writer = null;
+            try {
+                writeFile = new FileWriter(scoreFile);
+                writer = new BufferedWriter(writeFile);
+                writer.write(this.highScore);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if(writer!=null){
+                    try {
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -129,6 +195,11 @@ public class Panel extends JPanel implements ActionListener {
                 /*g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE); // wygląd jabłka*/
                 /* g.fillArc(appleX,appleY,UNIT_SIZE,UNIT_SIZE,15,225);*/ // rogalik zamiast jabłka ^^
 
+                 if(highScore.equals(""))
+                    {
+                        highScore = this.GetHighScoreValue();
+                    }
+
                 try {
                     Image appleFoodImg = ImageIO.read(appleFile);
                     g.drawImage(appleFoodImg, appleX, appleY, UNIT_SIZE, UNIT_SIZE, this); // JABLKO JAKO OBRAZEK!
@@ -167,9 +238,14 @@ public class Panel extends JPanel implements ActionListener {
                     }
                 }
                 g.setColor(new Color(182, 36, 217, 255));
-                g.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+                g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
                 FontMetrics metrics = getFontMetrics(g.getFont());
                 g.drawString("Score : " + eatenApples, (SCREEN_WIDTH - metrics.stringWidth("Score : " + eatenApples)) / 2, g.getFont().getSize()); // wynik
+
+                g.setColor(new Color(182, 36, 217, 255));
+                g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+                FontMetrics metrics2 = getFontMetrics(g.getFont());
+                g.drawString("Best Player : " + highScore, (SCREEN_WIDTH - metrics2.stringWidth("Best Player : " + highScore)) / 2,SCREEN_HEIGHT-700+g.getFont().getSize());
 
                 g.setColor(new Color(48, 217, 36, 255)); //podpis autora
                 g.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
@@ -179,12 +255,11 @@ public class Panel extends JPanel implements ActionListener {
 
             } else {
                 gameOver(g);
+                CheckScore();
                 isGameOver = true;
             }
         }
     }
-
-
 
     public void newApple() {
 
@@ -212,7 +287,7 @@ public class Panel extends JPanel implements ActionListener {
     public void lookForApple(){
         if(tabX[0] == appleX && tabY[0] == appleY){   // jeżeli głowa węża będzie na pozycji jabłka :
             bodyParts++;                     // zwiększ dlugość węża +1
-            eatenApples++;                  // nalicz wynik +1
+            eatenApples+=10;                  // nalicz wynik +1
             newApple();                     // generuj nowe jabłko
         }
     }
@@ -244,8 +319,13 @@ public class Panel extends JPanel implements ActionListener {
     public void gameOver(Graphics g){
         g.setColor(Color.RED); // wynik koncowy
         g.setFont(new Font("Comic Sans MS",Font.BOLD,40));
+        FontMetrics metrics = getFontMetrics(g.getFont());
+        g.drawString("Score : "+eatenApples,(SCREEN_WIDTH - metrics.stringWidth("Score : "+eatenApples))/2,g.getFont().getSize());
+
+        g.setColor(Color.ORANGE);
+        g.setFont(new Font("Comic Sans MS", Font.BOLD, 40));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
-        g.drawString("Score : "+eatenApples,(SCREEN_WIDTH - metrics1.stringWidth("Score : "+eatenApples))/2,g.getFont().getSize());
+        g.drawString("Best Player : " + highScore, (SCREEN_WIDTH - metrics1.stringWidth("Best Player : " + highScore)) / 2,SCREEN_HEIGHT-650+g.getFont().getSize());
 
         g.setColor(Color.RED); // metoda dla koniec gry
         g.setFont(new Font("Comic Sans MS",Font.BOLD,82));
