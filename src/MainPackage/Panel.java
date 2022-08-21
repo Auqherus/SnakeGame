@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import java.util.Random;
 
 public class Panel extends JPanel implements ActionListener {
@@ -24,8 +25,9 @@ public class Panel extends JPanel implements ActionListener {
     boolean running = false;
     boolean isGameMenu = true;
     boolean isGameOver = false;
-    File appleFile = new File("apple.png");
+    /*File appleFile = new File("images/apple.png");*/
     /*File bodyFile = new File("body2.png");*/
+
     boolean pause = false;
     public String highScore = "";
 
@@ -72,8 +74,11 @@ public class Panel extends JPanel implements ActionListener {
         g.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
         g.drawString("Game made by Auqherus na zaliczenie projektu", (SCREEN_WIDTH - 305), SCREEN_HEIGHT - 10); // for author
 
+
         try {
-            Image appleFoodImg = ImageIO.read(appleFile);
+            Image appleFoodImg = Toolkit.getDefaultToolkit().getImage("images/apple.png");  //Jak jest Pausa
+            /*URL imageURL = MainPackage.Panel.class.getResource("images/apple.png");*/
+            /*Image appleFoodImg = Toolkit.getDefaultToolkit().getImage(imageURL);*/
             g.drawImage(appleFoodImg, appleX, appleY, UNIT_SIZE, UNIT_SIZE, this); // JABLKO JAKO OBRAZEK!
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,8 +102,8 @@ public class Panel extends JPanel implements ActionListener {
         BufferedReader reader = null;
         try
         {
-          readFile = new FileReader("highScore.dat");
-          reader = new BufferedReader(readFile);
+            readFile = new FileReader("C:\\Users\\patry\\AppData\\Roaming\\SnakeTheGame\\highscore.txt");
+            reader = new BufferedReader(readFile);
             try {
                 return reader.readLine();
             } catch (IOException e) {
@@ -127,7 +132,7 @@ public class Panel extends JPanel implements ActionListener {
             String name = JOptionPane.showInputDialog("You set a new RECORD! What is your name?");
             highScore = name + ":" + eatenApples;
 
-            File scoreFile = new File("highscore.dat");
+            File scoreFile = new File("C:\\Users\\patry\\AppData\\Roaming\\SnakeTheGame\\highscore.txt");
             if(!scoreFile.exists()){
                 try {
                     scoreFile.createNewFile();
@@ -195,13 +200,16 @@ public class Panel extends JPanel implements ActionListener {
                 /*g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE); // wygląd jabłka*/
                 /* g.fillArc(appleX,appleY,UNIT_SIZE,UNIT_SIZE,15,225);*/ // rogalik zamiast jabłka ^^
 
-                 if(highScore.equals(""))
-                    {
-                        highScore = this.GetHighScoreValue();
-                    }
+                if(highScore.equals(""))
+                {
+                    highScore = this.GetHighScoreValue();
+                }
+
 
                 try {
-                    Image appleFoodImg = ImageIO.read(appleFile);
+                    /*Image appleFoodImg = Toolkit.getDefaultToolkit().getImage("images/apple.png");*/
+                    URL imageURL = Snake.class.getResource("images/apple.png");
+                    Image appleFoodImg = Toolkit.getDefaultToolkit().getImage(imageURL);
                     g.drawImage(appleFoodImg, appleX, appleY, UNIT_SIZE, UNIT_SIZE, this); // JABLKO JAKO OBRAZEK!
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -397,10 +405,10 @@ public class Panel extends JPanel implements ActionListener {
 
                 case KeyEvent.VK_SPACE:
                     if(isGameOver){
-                       eatenApples = 0;
-                       bodyParts = 2;
-                       isGameOver = false;
-                       startGame();
+                        eatenApples = 0;
+                        bodyParts = 2;
+                        isGameOver = false;
+                        startGame();
                     }
                     break;
 
