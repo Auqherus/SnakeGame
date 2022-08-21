@@ -102,7 +102,7 @@ public class Panel extends JPanel implements ActionListener {
         BufferedReader reader = null;
         try
         {
-            readFile = new FileReader("C:\\Users\\patry\\AppData\\Roaming\\SnakeTheGame\\highscore.txt");
+            readFile = new FileReader("C:\\Users\\Public\\highscore.txt");
             reader = new BufferedReader(readFile);
             try {
                 return reader.readLine();
@@ -132,7 +132,7 @@ public class Panel extends JPanel implements ActionListener {
             String name = JOptionPane.showInputDialog("You set a new RECORD! What is your name?");
             highScore = name + ":" + eatenApples;
 
-            File scoreFile = new File("C:\\Users\\patry\\AppData\\Roaming\\SnakeTheGame\\highscore.txt");
+            File scoreFile = new File("C:\\Users\\Public\\highscore.txt");
             if(!scoreFile.exists()){
                 try {
                     scoreFile.createNewFile();
