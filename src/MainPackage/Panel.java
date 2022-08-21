@@ -76,7 +76,9 @@ public class Panel extends JPanel implements ActionListener {
 
 
         try {
-            Image appleFoodImg = Toolkit.getDefaultToolkit().getImage("images/apple.png");  //Jak jest Pausa
+            /*Image appleFoodImg = Toolkit.getDefaultToolkit().getImage("images/apple.png");  //Jak jest Pausa*/
+            URL imageURL = Snake.class.getResource("images/apple.png");
+            Image appleFoodImg = Toolkit.getDefaultToolkit().getImage(imageURL);
             /*URL imageURL = MainPackage.Panel.class.getResource("images/apple.png");*/
             /*Image appleFoodImg = Toolkit.getDefaultToolkit().getImage(imageURL);*/
             g.drawImage(appleFoodImg, appleX, appleY, UNIT_SIZE, UNIT_SIZE, this); // JABLKO JAKO OBRAZEK!
