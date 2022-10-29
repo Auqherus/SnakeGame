@@ -185,7 +185,8 @@ public class Panel extends JPanel implements ActionListener {
                 g.setColor(Color.GREEN); // arrows
                 g.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
                 FontMetrics metrics3 = getFontMetrics(g.getFont());
-                g.drawString("Use [<] [^] [>] to MOVE", (SCREEN_WIDTH - metrics3.stringWidth("Use [<] [^] [>] to MOVE")) / 2, SCREEN_HEIGHT - 350);
+                g.drawString("[^]", (SCREEN_WIDTH - metrics3.stringWidth("[^]      ")) / 2, SCREEN_HEIGHT - 385);
+                g.drawString("Use [<] [v] [>] to MOVE", (SCREEN_WIDTH - metrics3.stringWidth("Use [<] [v] [>] to MOVE")) / 2, SCREEN_HEIGHT - 350);
                 /*FontMetrics metrics = getFontMetrics(g.getFont());*/
 
                 g.setColor(new Color(48, 217, 36, 255)); //podpis autora
